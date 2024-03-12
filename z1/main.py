@@ -9,7 +9,7 @@ import quickiter
 def main():
     d = {
         "shellsort": shell.sort,
-        "heapsort": heap.sort,
+        # "heapsort": heap.sort,
         "mergesort": merge.sort,
         "quicksort recursive": quickrec.sort,
         "quicksort iterative": quickiter.sort 
