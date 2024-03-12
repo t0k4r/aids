@@ -1,6 +1,6 @@
 import bench
 import shell
-import heap
+import heap3
 import merge
 import quickrec
 import quickiter
@@ -9,7 +9,7 @@ import quickiter
 def main():
     d = {
         "shellsort": shell.sort,
-        # "heapsort": heap.sort,
+        "heapsort": heap3.sort,
         "mergesort": merge.sort,
         "quicksort recursive": quickrec.sort,
         "quicksort iterative": quickiter.sort 

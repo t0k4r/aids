@@ -88,8 +88,14 @@ def sort(arr: list[int]):
     for e in wynik:
         arr.append(e)
     
+import time
+
 def main():
-    bench.debug(gen.Rand, sort, 10)
+    start = time.perf_counter()
+    bench.run(gen.Rand, sort, 10_000, 1)
+    # bench.debug(gen.Rand, sort, 10)
+    end = time.perf_counter()
+    print(end-start)
 
 
 if __name__ == "__main__":
