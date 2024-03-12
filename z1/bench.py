@@ -3,7 +3,7 @@ import gen
 
 class Results():
     def __init__(self) -> None:
-        self.runs = []
+        self.runs:list[float] = []
     def add(self, time: float):
         self.runs.append((time))
     def min(self)->float:
@@ -23,7 +23,11 @@ def run(arrfn, sortfn, arrlen, times) -> Results:
         res.add(end-start)
     return res
 
-def plot(res: dict[str, Results]):
+def all(res: dict[str, Results]):
+    val = Results()
+    for r in res.values():
+        val.runs.extend(r.runs)
+    print(f"\tAll:\tmin:{val.min():8f}\tmax:{val.max():8f}\tavg:{val.avg():8f}")
     pass
 
 def test(name ,sortfn, arrlen):
@@ -33,7 +37,7 @@ def test(name ,sortfn, arrlen):
         res[arrfn.__name__] = run(arrfn, sortfn, arrlen, 10)
     for key, val in res.items():
         print(f"\t{key}:\tmin:{val.min():8f}\tmax:{val.max():8f}\tavg:{val.avg():8f}")
-    plot(res)
+    all(res)
 
 def debug(arrfn, sortfn, arrlen):
     arr = arrfn(arrlen)
