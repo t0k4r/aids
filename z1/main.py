@@ -15,7 +15,7 @@ def main():
         "quicksort iterative": quickiter.sort 
     }
     for name, func in d.items():
-        bench.test(name, func, 10000)
+        bench.test(name, func, 10)
 
 if __name__ == "__main__":
     main()

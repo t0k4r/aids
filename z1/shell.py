@@ -9,7 +9,7 @@ def sort(arr: list[int]):
     while h >= 1:
         for i in range(h, n):
             j=i
-            while j>=h and arr[j] < arr[j-h]:
+            while j>=h and arr[j] > arr[j-h]:
                 pim = arr[j]
                 arr[j] = arr[j - h]
                 arr[j - h] = pim

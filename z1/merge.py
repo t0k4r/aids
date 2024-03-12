@@ -1,6 +1,8 @@
 import gen
 import bench
 
+scal = 0
+
 def sort(arr: list[int]):
     n = len(arr)
     if n == 1:
@@ -13,6 +15,8 @@ def sort(arr: list[int]):
 
     i,j = 0,0
     narr=[]
+    global scal
+    scal +=1
     while i<len(l) or j<len(r):
         if j == len(r):
             narr.append(l[i])
@@ -32,6 +36,8 @@ def sort(arr: list[int]):
 
 def main():
     bench.debug(gen.Rand, sort, 10)
+    global scal
+    print(f"scalcount: {scal}")
 
 if __name__ == "__main__":
     main()

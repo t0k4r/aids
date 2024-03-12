@@ -38,6 +38,6 @@ def test(name ,sortfn, arrlen):
 
 def debug(arrfn, sortfn, arrlen):
     arr = arrfn(arrlen)
-    print(arr)
+    print(f"In: {arr}")
     sortfn(arr)
-    print(arr)
+    print(f"Out: {arr}")

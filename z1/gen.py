@@ -42,31 +42,6 @@ def A(n: int) -> list[int]:
 
 
 
-def A2(n: int) -> list[int]:
-    l = []
-    x = n // 2
-    a = random.randint(1, 10 * n)
-    while a % 2 == 0:
-        a = random.randint(1, 10 * n)
-    r_max = min(10 * n - a, a - 1)  # Maximum possible value for 'r'
-
-    for _ in range(x + (n % 2)):
-        l.append(a)
-        r = random.randint(1, r_max)
-        while r % 2 != 0:
-            r = random.randint(1, r_max)
-        a += r
-
-    # Decrement loop - stop when 'a' reaches 1
-    while a > 1:
-        l.append(a)
-        r_max = min(10 * n, a - 1)  # Update maximum possible value for 'r'
-        r = random.randint(1, r_max)
-        while r % 2 != 0:
-            r = random.randint(1, r_max)
-        a -= r
-    return l
-
 def randmod2(a,b):
     pass
     n = random.randint(a,b-1)
@@ -81,12 +56,10 @@ def A3(n: int) -> list[int]:
             arr.append(randmod2(1, 10))
             continue
         prev = arr[i-1]
-        arr.append(randmod2(prev, 10*(i+1)))
+        arr.append(randmod2(prev, 10*(i*2)))
     for i in range(mid, n):
         pass
-    #up
 
-    #down
 
 
     return arr
