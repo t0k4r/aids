@@ -18,7 +18,7 @@ def sort(arr: list[int]):
 
 
 def main():
-    bench.debug(gen.A3, sort, 10)
+    bench.debug(gen.V, sort, 10)
 
 if __name__ == "__main__":
     main()

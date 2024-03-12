@@ -1,6 +1,5 @@
 import time
 import gen
-# import matplotlib as plt
 
 class Results():
     def __init__(self) -> None:

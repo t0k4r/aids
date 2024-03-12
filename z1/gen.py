@@ -15,7 +15,7 @@ def Asc(n:int)->list[int]:
     step =  (10*n-start) // n
     return [start+(i*step) for i in range(n)]
 
-def A(n: int) -> list[int]:
+def A2(n: int) -> list[int]:
     l = []
     x = n // 2
     a = random.randint(1, 10 * n)
@@ -48,18 +48,19 @@ def randmod2(a,b):
     if n%2==0: return n
     return n+1
 
-def A3(n: int) -> list[int]:
+def A(n: int) -> list[int]:
     arr = []
     mid = n//2
     for i in range(mid):
         if i == 0:
-            arr.append(randmod2(1, 10))
+            arr.append(randmod2(1, 10)+1)
             continue
         prev = arr[i-1]
-        arr.append(randmod2(prev, 10*(i*2)))
+        arr.append(randmod2(prev, 10*(i*2))+1)
     for i in range(mid, n):
-        pass
-
+        prev = arr[i-1]
+        min = prev-1//n-i
+        arr.append(randmod2(min, prev-2))
 
 
     return arr
@@ -72,8 +73,9 @@ def V(n:int)->list[int]:
     n = len(arr)
     l = arr[:n//2]
     p = arr[n//2:]
-    l.reverse()
-    p.reverse()
+    # l.reverse()
+    # p.reverse()
+    # l.extend(p)
     p.extend(l)
     return p
 
