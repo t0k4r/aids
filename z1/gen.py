@@ -73,9 +73,6 @@ def V(n:int)->list[int]:
     n = len(arr)
     l = arr[:n//2]
     p = arr[n//2:]
-    # l.reverse()
-    # p.reverse()
-    # l.extend(p)
     p.extend(l)
     return p
 
