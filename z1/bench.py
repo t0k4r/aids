@@ -1,5 +1,6 @@
 import time
 import gen
+import matplotlib as plt
 
 class Results():
     def __init__(self) -> None:
@@ -44,3 +45,11 @@ def debug(arrfn, sortfn, arrlen):
     print(f"In: {arr}")
     sortfn(arr)
     print(f"Out: {arr}")
+
+
+def runtests(name, sortfn, arrfn) -> list[Results]:
+    listres = []
+    for i in [10*i for i in range(1,129)]:
+        res = run(arrfn,sortfn, i,128)
+        listres.append(res)
+    return listres
