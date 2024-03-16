@@ -24,24 +24,25 @@ def sort(arr: list[int]):
 
 
 def main():
-    # ax = plt.subplot()
-    # x = [10*i for i in range(1,129)]
-    # y =list(map(lambda x: x.avg(),bench.runtests("", sort, gen.Rand)))
-    # ax.plot(x,y, label="losowe")
-    # y =list(map(lambda x: x.avg(),bench.runtests("", sort, gen.A)))
-    # ax.plot(x,y, label="A")
-    # y =list(map(lambda x: x.avg(),bench.runtests("", sort, gen.V)))
-    # ax.plot(x,y, label="V")
-    # y =list(map(lambda x: x.avg(),bench.runtests("", sort, gen.Asc)))
-    # ax.plot(x,y, label="rosnące")
-    # y =list(map(lambda x: x.avg(),bench.runtests("", sort, gen.Desc)))
-    # ax.plot(x,y, label="malejące")
-    # ax.legend()
-    # ax.set_xlabel("długość listy")
-    # ax.set_ylabel("czas (s)")
-    # ax.set_title("shellsort")
-    # plt.show()
-    bench.debug(gen.V, sort, 10)
+    ax = plt.subplot()
+    x = [10*i for i in range(1,129)]
+    y = bench.runtests("", sort, gen.Rand)
+    ax.plot(x,list(map(lambda x: x.avg(), y)), label="losowe")
+    y =list(map(lambda x: x.avg(),bench.runtests("", sort, gen.A)))
+    ax.plot(x,y, label="A")
+    y =list(map(lambda x: x.avg(),bench.runtests("", sort, gen.V)))
+    ax.plot(x,y, label="V")
+    y =list(map(lambda x: x.avg(),bench.runtests("", sort, gen.Asc)))
+    ax.plot(x,y, label="rosnące")
+    y =list(map(lambda x: x.avg(),bench.runtests("", sort, gen.Desc)))
+    ax.plot(x,y, label="malejące")
+    ax.legend()
+    ax.set_xlabel("długość listy")
+    ax.set_ylabel("czas (s)")
+    ax.set_title(f"shellsort")
+    # ax.add_table()
+    plt.show()
+    #bench.debug(gen.V, sort, 10)
 
 if __name__ == "__main__":
     main()

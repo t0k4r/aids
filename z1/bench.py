@@ -2,6 +2,8 @@ import time
 import gen
 import matplotlib as plt
 
+
+import math
 class Results():
     def __init__(self) -> None:
         self.runs:list[float] = []
@@ -13,6 +15,12 @@ class Results():
         return max(self.runs)
     def avg(self)->float:
         return sum(self.runs)/len(self.runs)
+    def stdodchy(self)->float:
+        x = self.avg()
+        r = 0
+        for run in self.runs:
+            r += (run-x)**2
+        return math.sqrt(r/len(self.runs))
 
 def run(arrfn, sortfn, arrlen, times) -> Results:
     res = Results()
@@ -50,6 +58,6 @@ def debug(arrfn, sortfn, arrlen):
 def runtests(name, sortfn, arrfn) -> list[Results]:
     listres = []
     for i in [10*i for i in range(1,129)]:
-        res = run(arrfn,sortfn, i,128)
+        res = run(arrfn,sortfn, i,10)
         listres.append(res)
     return listres
