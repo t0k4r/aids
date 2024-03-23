@@ -105,7 +105,7 @@ def desc():
 
 
 def main():
-    desc()
+    asc()
     return
     d = {
         "shellsort": shell.sort,
