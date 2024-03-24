@@ -30,6 +30,9 @@ def qsort(arr: list[int], lo:int, hi:int):
 
 
 def main():
+    bench.debug(gen.Rand, sort, 10)
+
+    return
     ax = plt.subplot()
     x = [10*i for i in range(1,129)]
     y =list(map(lambda x: x.avg(),bench.runtests("", sort, gen.Rand)))
