@@ -177,15 +177,26 @@ def height_of_subtree(node):
         # Zwrócenie większej wysokości z lewego i prawego poddrzewa, plus jeden dla bieżącego węzła
         return max(left_height, right_height) + 1
 
-def delete_subtree(node):
-    if node == None:
-        return
-    # Usunięcie lewego i prawego poddrzewa rekurencyjnie
-    delete_subtree(node.left)
-    delete_subtree(node.right)
 
-    node.left = None
-    node.right = None
+def delete_subtree(root, value):
+    """
+    Usuwa poddrzewo o korzeniu o wartości równiej value (nie usuwa korzenia).
+    """
+    if root is None:
+        return
+
+    if root.left and root.left.value == value:
+        # Usuwa lewe poddrzewo
+        root.left = None
+    elif root.right and root.right.value == value:
+        # Usuwa prawe poddrzewo
+        root.right = None
+    else:
+        # Rekurencyjnie sprawdza lewe i prawe poddrzewo
+        delete_subtree(root.left, value)
+        delete_subtree(root.right, value)
+
+
 
 def find_node(root, key):
     if root == None:
@@ -205,52 +216,91 @@ def find_node(root, key):
     return None
 
 
-def rotate_right(grandparent, parent):
-    grandparent.left = parent.right
-    parent.right = grandparent
-    return parent
-
-def create_backbone(root):
-    ptr = root
-    new_root = None
-    while ptr != None:
-        left_child = ptr.left #Przypisanie lewgeo dziecko bieżącego węzła do zmiennej
-        if left_child != None: #Sprawdzamy, czy istnieje lewe dziecko dla bieżącego węzła.
-            ptr.left = left_child.right
-            left_child.right = ptr
-            ptr = left_child
-            if new_root is None:
-                new_root = ptr
-        else:
-            if new_root is None:
-                new_root = ptr
-            ptr = ptr.right
+def rotate_right(node, left_child=None):
+    if node is None or (left_child is None and node.left is None):
+        return node
+    
+    if left_child is None:
+        left_child = node.left
+    
+    new_root = left_child
+    if new_root.right is not None:
+        node.left = new_root.right
+    else:
+        node.left = None
+    new_root.right = node
     return new_root
 
-def create_perfect_tree(root, n): #n->liczba węzłów
-    m = 2 ** (int(n ** 0.5)) - 1 #liczba węzłów, które zostaną przekształcone w drzewo optymalne 
-    remaining = n - m #liczba pozostałych węzłów do przetworzenia po wyborze m węzłów
 
-    for i in range(remaining): #dwie pętle to zmiany w drzewo optymalne
-        root = rotate_right(root, root.left)
-        root = root.right
+def create_backbone(root):
+    new_root = None
+    current = root
+    prev = None
+    while current is not None:
+        left_child = current.left
+        if left_child is not None:
+            current.left = left_child.right
+            left_child.right = current
+            current = left_child
+            if prev is None:
+                new_root = current
+            if prev is not None:
+                prev.right = current
+        else:
+            prev = current
+            if new_root is None:
+                new_root = prev
+            current = current.right
+    return new_root
+
+
+
+
+def create_perfect_tree(root, n):
+    if n <= 1:
+        return root
+    m = 2 ** (int(n ** 0.5)) - 1
+    remaining = n - m
+
+    for i in range(remaining):
+        if root is not None:
+            root = rotate_right(root)
     while m > 1:
         m //= 2
-        root = root.right
         for i in range(m):
-            root = rotate_right(root, root.left)
+            root.left = rotate_right(root.left)
             root = root.right
     return root
 
 
+
+
+
+
+
+def is_balanced(root):
+    if root is None:
+        return True
+    left_height = height_of_subtree(root.left)
+    right_height = height_of_subtree(root.right)
+    return abs(left_height - right_height) <= 1 and is_balanced(root.left) and is_balanced(root.right)
+
+def count_nodes(root):
+    if root is None:
+        return 0
+    return 1 + count_nodes(root.left) + count_nodes(root.right)
+
+
+
 def balance_tree(root):
-    root = create_backbone(root)
-    count = 0 #liczba węzłów w drzewie
-    ptr = root
-    while ptr != None:
-        ptr = ptr.right
-        count += 1
-    return create_perfect_tree(root, count)
+    while not is_balanced(root):
+        root = create_backbone(root)
+        count = count_nodes(root)
+        root = create_perfect_tree(root, count)
+    return root
+
+
+
 
 
 
@@ -298,9 +348,12 @@ for i in path_to_min: #type: ignore
 ###########  Usuwanie elementu
 print()
 print()
+preorder_traversal(root)
+print()
 root = find_level_and_delete(root, 5)
+preorder_traversal(root)
 
-
+print()
 ###### sortowanie
 print()
 print()
@@ -314,29 +367,32 @@ print()
 #ktorego korzeń (klucz) podaje użytkownik, 
 #podanie wysokości tego poddrzewa, 
 #a następnie usunięcie tego poddrzewa metodą post-order
-
+preorder_traversal(root)
+print()
 key = int(input("Podaj klucz korzenia poddrzewa: "))  # Pobranie klucza korzenia od użytkownika
 subtree_root = find_node(root, key)  # Znalezienie węzła o podanym kluczu
-if subtree_root != None:
+if subtree_root is not None:
     print("Poddrzewo w porządku pre-order:")
     preorder_subtree(subtree_root)  # Wypisanie poddrzewa w porządku pre-order
     print("\nWysokość poddrzewa:", height_of_subtree(subtree_root))  # Obliczenie i wypisanie wysokości poddrzewa
-    delete_subtree(subtree_root)  # Usunięcie poddrzewa
+    delete_subtree(root, key)  # Usunięcie poddrzewa
     print("Poddrzewo zostało usunięte.")
 else:
     print("Węzeł o podanym kluczu nie istnieje.")
 
+preorder_traversal(root)
 
 ############# dsw(Day-Stout-Warren)
 
-print("Wartości drzewa przed zrównoważeniem:")
+print()
 preorder_traversal(root)
+print()
 
 # Wykonaj równoważenie drzewa
 root = balance_tree(root)
 
 # Wydrukuj wartości drzewa w porządku pre-order po zrównoważeniu
-print("\nWartości drzewa po zrównoważeniu:")
+print("wynik:")
 preorder_traversal(root)
 
 
