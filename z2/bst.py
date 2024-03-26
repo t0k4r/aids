@@ -302,98 +302,191 @@ def balance_tree(root):
 
 
 
+class Tree():
+    def __init__(self, arr: list) -> None:
+        self.root: Node|None = None
+        for i in arr:
+            self.root = insert(self.root, i)    
+    def preorder(self):
+        preorder_traversal(self.root)
+    def max(self):
+        return find_max(self.root,self.root.value)#type: ignore
+    def min(self):
+        return find_min(self.root,self.root.value)#type: ignore
+    def searchprint(self ,value):
+        if self.root == None: raise Exception("404")
+        rt = ""
+        now = self.root
+        while now != None:
+            rt += f"Node({now.value})"
+            if now.value > value:
+                rt+=f".left -> "
+                now = now.left
+            elif now.value < value:
+                rt+=f".right -> "
+                now = now.right
+            else:
+                print(rt) 
+                return
+        raise Exception("404")
+    def searchlevel(self,value):
+        if self.root == None: return -1
+        now = self.root
+        i = 1
+        while now != None:
+            if now.value > value:
+                now = now.left
+            elif now.value < value:
+                now = now.right
+            else: 
+                return i
+            i+=1
+        return -1
+    
+    def finddelete(self,value):
+        print("poziom", self.searchlevel(value))
+        self.root = delete_node(self.root, value)
+    def desc(self):
+        inorder_reverse_traversal(self.root)
+    def findnode(self, value):
+        return find_node(self.root, value)
+    def subdelete(self, value):
+        delete_subtree(self.root, value)
+    def balance(self):
+        self.root = balance_tree(self.root)
+
+def main():
+    t = Tree([8, 2, 5, 14, 10, 12, 13, 6, 9])
+    while True:
+        c = int(input("""procedury: 
+    0) exit
+    1) min,max,search
+    2) poziom,usuń
+    3) malejąco
+    4) preorder,delete
+    5) równoważenie
+prompt: """))
+        match c:
+            case 0: break
+            case 1:
+                print("min: ", t.min())
+                t.searchprint(t.min())
+                print("max: ", t.max())
+                t.searchprint(t.max())
+            case 2: 
+                v = int(input("value: "))
+                t.finddelete(v)
+            case 3:
+                t.desc()
+                print()
+            case 4:
+                v = int(input("value: "))
+                preorder_traversal(t.root)
+                print()
+                t.subdelete(v)
+                preorder_traversal(t.root)
+                print()
+            case 5:
+                print("TODO test this!!!")
+                preorder_traversal(t.root)
+                print()
+                t.balance()
+                preorder_traversal(t.root)
+                print()                
+
+
+if __name__ == "__main__":
+    main()
 
 
 
 
+# #######   TWORZENIE DRZEWA
 
+# root = None # Bieżący węzeł jakby, to taka zmienna do rekurencji
+# arr = [5, 3, 7, 1, 4, 6, 8]
+# for i in arr:
+#     root = insert(root, i)
 
-#######   TWORZENIE DRZEWA
-
-root = None # Bieżący węzeł jakby, to taka zmienna do rekurencji
-arr = [5, 3, 7, 1, 4, 6, 8]
-for i in arr:
-    root = insert(root, i)
-
-# Wyświetlanie wartości drzewa w kolejności pre-order
-preorder_traversal(root)
-
-
-
-#######   MAKSYMALNE I MINIMALNE + TRASY
-print()
-
-
-maks=find_max(root, float('-inf'))
-print(maks)
-path_to_max = find_path_to_max(root, maks)
-
-# Wydrukuj ścieżkę od korzenia do wartości maksymalnej
-
-print("Ścieżka od korzenia do wartości maksymalnej:")
-for i in path_to_max: #type: ignore
-    print(i)
-
-
-min_value = find_min(root, float('inf'))
-print(min_value)
-path_to_min = find_path_to_min(root, min_value)
-
-print("Ścieżka od korzenia do wartości minimalnej:")
-for i in path_to_min: #type: ignore
-    print(i)
+# # Wyświetlanie wartości drzewa w kolejności pre-order
+# preorder_traversal(root)
 
 
 
-###########  Usuwanie elementu
-print()
-print()
-preorder_traversal(root)
-print()
-root = find_level_and_delete(root, 5)
-preorder_traversal(root)
-
-print()
-###### sortowanie
-print()
-print()
-print("posortowane:")
-inorder_reverse_traversal(root)
-print()
-print()
+# #######   MAKSYMALNE I MINIMALNE + TRASY
+# print()
 
 
-#######  wypisanie w porządku pre-order podrzewa, 
-#ktorego korzeń (klucz) podaje użytkownik, 
-#podanie wysokości tego poddrzewa, 
-#a następnie usunięcie tego poddrzewa metodą post-order
-preorder_traversal(root)
-print()
-key = int(input("Podaj klucz korzenia poddrzewa: "))  # Pobranie klucza korzenia od użytkownika
-subtree_root = find_node(root, key)  # Znalezienie węzła o podanym kluczu
-if subtree_root is not None:
-    print("Poddrzewo w porządku pre-order:")
-    preorder_subtree(subtree_root)  # Wypisanie poddrzewa w porządku pre-order
-    print("\nWysokość poddrzewa:", height_of_subtree(subtree_root))  # Obliczenie i wypisanie wysokości poddrzewa
-    delete_subtree(root, key)  # Usunięcie poddrzewa
-    print("Poddrzewo zostało usunięte.")
-else:
-    print("Węzeł o podanym kluczu nie istnieje.")
+# maks=find_max(root, float('-inf'))
+# print(maks)
+# path_to_max = find_path_to_max(root, maks)
 
-preorder_traversal(root)
+# # Wydrukuj ścieżkę od korzenia do wartości maksymalnej
 
-############# dsw(Day-Stout-Warren)
+# print("Ścieżka od korzenia do wartości maksymalnej:")
+# for i in path_to_max: #type: ignore
+#     print(i)
 
-print()
-preorder_traversal(root)
-print()
 
-# Wykonaj równoważenie drzewa
-root = balance_tree(root)
+# min_value = find_min(root, float('inf'))
+# print(min_value)
+# path_to_min = find_path_to_min(root, min_value)
 
-# Wydrukuj wartości drzewa w porządku pre-order po zrównoważeniu
-print("wynik:")
-preorder_traversal(root)
+# print("Ścieżka od korzenia do wartości minimalnej:")
+# for i in path_to_min: #type: ignore
+#     print(i)
+
+
+
+# ###########  Usuwanie elementu
+# print()
+# print()
+# preorder_traversal(root)
+# print()
+# root = find_level_and_delete(root, 5)
+# preorder_traversal(root)
+
+# print()
+# ###### sortowanie
+# print()
+# print()
+# print("posortowane:")
+# inorder_reverse_traversal(root)
+# print()
+# print()
+
+
+# #######  wypisanie w porządku pre-order podrzewa, 
+# #ktorego korzeń (klucz) podaje użytkownik, 
+# #podanie wysokości tego poddrzewa, 
+# #a następnie usunięcie tego poddrzewa metodą post-order
+# preorder_traversal(root)
+# print()
+# key = int(input("Podaj klucz korzenia poddrzewa: "))  # Pobranie klucza korzenia od użytkownika
+# subtree_root = find_node(root, key)  # Znalezienie węzła o podanym kluczu
+# if subtree_root is not None:
+#     print("Poddrzewo w porządku pre-order:")
+#     preorder_subtree(subtree_root)  # Wypisanie poddrzewa w porządku pre-order
+#     print("\nWysokość poddrzewa:", height_of_subtree(subtree_root))  # Obliczenie i wypisanie wysokości poddrzewa
+#     delete_subtree(root, key)  # Usunięcie poddrzewa
+#     print("Poddrzewo zostało usunięte.")
+# else:
+#     print("Węzeł o podanym kluczu nie istnieje.")
+
+# preorder_traversal(root)
+
+# ############# dsw(Day-Stout-Warren)
+
+# print()
+# preorder_traversal(root)
+# print()
+
+# # Wykonaj równoważenie drzewa
+# root = balance_tree(root)
+
+# # Wydrukuj wartości drzewa w porządku pre-order po zrównoważeniu
+# print("wynik:")
+# preorder_traversal(root)
 
 
 

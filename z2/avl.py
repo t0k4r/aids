@@ -1,158 +1,73 @@
-def main():
-    t= Tree()
-    t.build([8, 2, 5, 14, 10, 12, 13, 6, 9])
-    t.search(12)
-
-
-
-
-class Node:
-    def __init__(self, value) -> None:
+class Node():
+    def __init__(self, value):
         self.value = value
         self.left: Node|None = None
         self.right: Node|None = None
-    
-    def add(self, value):
-        if value < self.value:
-            if self.left == None:
-                self.left = Node(value)
-            else:
-                self.left.add(value)
+        self.height: int = 1
+
+def treebuild(root: Node|None, sorted: list, height=1) -> Node|None:
+    if len(sorted) == 0: return root
+    i = len(sorted)//2
+    if len(sorted)%2==0: i-=1
+    root = Node(sorted[i])
+    root.height = height
+    root.left = treebuild(root.left, sorted[0:i], height+1)
+    root.right = treebuild(root.right, sorted[i+1:len(sorted)], height+1)
+    return root
+
+
+def treesearchprint(root:Node|None ,value):
+    if root == None: raise Exception("404")
+    rt = ""
+    now = root
+    while now != None:
+        rt += f"Node({now.value})"
+        if now.value > value:
+            rt+=f".left -> "
+            now = now.left
+        elif now.value < value:
+            rt+=f".right -> "
+            now = now.right
         else:
-            if self.right == None:
-                self.right = Node(value)
-            else:
-                self.right.add(value)
+            print(rt) 
+            return
+    raise Exception("404")
 
-
-class Tree:
-    def __init__(self) -> None:
-        self.root: Node|None = None
-
-    def build(self, arr: list):
-        arr.sort()
-        i = len(arr)//2
-        mean = arr[i]
-        self.add(mean)
-        larr = arr[0:i]
-        rarr = arr[i+1:len(arr)]
-        while len(larr) != 0:
-            i = len(larr)//2
-            if len(larr)%2==0: i-=1
-            self.add(larr.pop(i))
-        while len(rarr) != 0:
-            i = len(rarr)//2
-            if len(rarr)%2==0: i-=1
-            self.add(rarr.pop(i))
-
-    def add(self, value):
-        if self.root == None:
-            self.root = Node(value)
+def treesubtree(root: Node|None, value):
+    if root == None: raise Exception("404")
+    now = root
+    while now != None:
+        if now.value > value:
+            now = now.left
+        elif now.value < value:
+            now = now.right
         else:
-            self.root.add(value)
-    
-    def min(self):
-        now = self.root
-        if now == None: raise Exception("empty")
-        while now.left != None:  
-            now = now.left 
-        return now.value 
-    
-    def delete(self, value):
-        pass
+            return now
+    raise Exception("404")
 
-    def deletesubtree(self, value):
-        if self.root == None: raise Exception("404")
-        prev: Node|None = None
-        now = self.root
-        while now != None:
-            if now.value > value:
-                prev = now
-                now = now.left
-            elif now.value < value:
-                prev = now
-                now = now.right
-            else: 
-                if prev == None: 
-                    self.root = None
-                    return
-                if prev.left.value == now.value: #type: ignore
-                    prev.left = None
-                else:
-                    prev.right = None
-                return
-        raise Exception("404")
-    
-    def balance(self, value):
-        pass
+def treegetlevel(root: Node|None, height:int)->list:
+    values = []
+    if root == None: pass
+    elif root.height < height:
+        values.extend(treegetlevel(root.left, height))
+        values.extend(treegetlevel(root.right, height))
+    elif root.height == height:
+        values.append(root.value)     
+    return values
 
+def treemax(root:Node|None):
+    now = root
+    if now == None: raise Exception("empty")
+    while now.left != None:
+        now = now.left 
+    return now.value
 
-    def search(self, value):
-        if self.root == None: return False
-        rt = ""
-        now = self.root
-        while now != None:
-            rt += f"Node({now.value})"
-            if now.value > value:
-                rt+=f".left -> "
-                now = now.left
-            elif now.value < value:
-                rt+=f".right -> "
-                now = now.right
-            else: 
-                break
-        else:
-            return False
-        print(rt)
-        return True
-
-    def searchnode(self, value):
-        pass
-        if self.root == None: raise Exception("404")
-        now = self.root
-        while now != None:
-            if now.value > value:
-                now = now.left
-            elif now.value < value:
-                now = now.right
-            else: 
-                return now
-        raise Exception("404")
-
-    def searchlevel(self,value):
-        if self.root == None: return -1
-        rt = ""
-        now = self.root
-        i = 0
-        while now != None:
-            if now.value > value:
-                now = now.left
-            elif now.value < value:
-                now = now.right
-            else: 
-                break
-            i+=1
-        else:
-            return -1
-        return i
-    
-    def max(self):
-        now = self.root
-        if now == None: raise Exception("empty")
-        while now.right != None:
-            now = now.right 
-        return now.value
-
-    def height(self):
-        pass
-
-def printlevel(root: Node|None, level: int, now: int):
-    if root == None: return
-    if now < level:
-        printlevel(root.left, level, now+1)
-        printlevel(root.right, level, now+1)
-    elif now == level:
-        print(root.value, end=", ")
+def treemin(root:Node|None):
+    now = root
+    if now == None: raise Exception("empty")
+    while now.right != None:
+        now = now.right 
+    return now.value
 
 def preorder(root: Node|None):
     if root == None:
@@ -164,9 +79,9 @@ def preorder(root: Node|None):
 def inorder(root: Node|None):
     if root == None:
         return
-    inorder(root.left)
-    print(root.value)
     inorder(root.right)
+    print(root.value)
+    inorder(root.left)
 
 def inorderdesc(root: Node|None):
     if root == None:
@@ -175,14 +90,82 @@ def inorderdesc(root: Node|None):
     print(root.value)
     inorderdesc(root.left)
 
+def treedeletenode(root: Node|None, value):
+    if root == None: return None
+    elif root.value == value and root.left == None and root.right == None:
+        return None
+    elif root.value == value and root.left == None and root.right != None:
+        return root.right
+    elif root.value == value and root.left != None and root.right == None:
+        return root.left
+    elif root.value == value:
+        return None
+    else:
+        return root
+def treedeletesubtree(root: Node|None, value):
+    pass
+def treebalance(root: Node|None):
+    pass
 
-def postorder(root: Node|None):
-    if root == None:
-        return
-    postorder(root.left)
-    postorder(root.right)
-    print(root.value)
 
-    
+class Tree():
+    def __init__(self, sorted:list) -> None:
+        self.root = treebuild(None, sorted)
+    def max(self):
+        return treemax(self.root)
+    def min(self):
+        return treemin(self.root)
+    def searchprint(self, value):
+        treesearchprint(self.root, value)
+    def finddelete(self, value):
+        print("TODO")
+    def desc(self):
+        inorderdesc(self.root)
+    def balance(self):
+        print("todo")
+    def subdelete(self, value):
+        print("todo")
+
+
+def main():
+    t = Tree([8, 2, 5, 14, 10, 12, 13, 6, 9])
+    while True:
+        c = int(input("""procedury: 
+    0) exit
+    1) min,max,search
+    2) poziom,usuń
+    3) malejąco
+    4) preorder,delete
+    5) równoważenie
+prompt: """))
+        match c:
+            case 0: break
+            case 1:
+                print("min: ", t.min())
+                t.searchprint(t.min())
+                print("max: ", t.max())
+                t.searchprint(t.max())
+            case 2: 
+                v = int(input("value: "))
+                t.finddelete(v)
+            case 3:
+                t.desc()
+                print()
+            case 4:
+                v = int(input("value: "))
+                preorder(t.root)
+                print()
+                t.subdelete(v)
+                preorder(t.root)
+                print()
+            case 5:
+                print("TODO test this!!!")
+                preorder(t.root)
+                print()
+                t.balance()
+                preorder(t.root)
+                print()                
+
+
 if __name__ == "__main__":
     main()
