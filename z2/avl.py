@@ -2,8 +2,7 @@ def main():
     t= Tree()
     t.build([8, 2, 5, 14, 10, 12, 13, 6, 9])
     t.search(12)
-    # t.deletesubtree(9)
-    # inorder(t.root)
+
 
 
 

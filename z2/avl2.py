@@ -11,12 +11,12 @@ def treebuild(root: Node|None, sorted: list, height=1) -> Node|None:
     if len(sorted)%2==0: i-=1
     root = Node(sorted[i])
     root.height = height
-    print("left",sorted[0:i],"rigth",sorted[i+1:len(sorted)] )
     root.left = treebuild(root.left, sorted[0:i], height+1)
-    root.right = treebuild(root.right, sorted[i+1:len(sorted)], height)
+    root.right = treebuild(root.right, sorted[i+1:len(sorted)], height+1)
     return root
 
-def treesearch(root ,value):
+
+def treesearchprint(root:Node|None ,value):
     if root == None: raise Exception("404")
     rt = ""
     now = root
@@ -33,7 +33,7 @@ def treesearch(root ,value):
             return
     raise Exception("404")
 
-def treesubtree(root, value):
+def treesubtree(root: Node|None, value):
     if root == None: raise Exception("404")
     now = root
     while now != None:
@@ -45,14 +45,24 @@ def treesubtree(root, value):
             return now
     raise Exception("404")
 
-def treemax(root):
+def treegetlevel(root: Node|None, height:int)->list:
+    values = []
+    if root == None: pass
+    elif root.height < height:
+        values.extend(treegetlevel(root.left, height))
+        values.extend(treegetlevel(root.right, height))
+    elif root.height == height:
+        values.append(root.value)     
+    return values
+
+def treemax(root:Node|None):
     now = root
     if now == None: raise Exception("empty")
     while now.left != None:
         now = now.left 
     return now.value
 
-def treemin(root):
+def treemin(root:Node|None):
     now = root
     if now == None: raise Exception("empty")
     while now.right != None:
@@ -80,6 +90,31 @@ def inorderdesc(root: Node|None):
     print(root.value)
     inorderdesc(root.left)
 
+def treedeletenode(root: Node|None, value):
+    if root == None: return None
+    elif root.value == value and root.left == None and root.right == None:
+        return None
+    elif root.value == value and root.left == None and root.right != None:
+        return root.right
+    elif root.value == value and root.left != None and root.right == None:
+        return root.left
+    elif root.value == value:
+        return None
+    else:
+        return root
+def treedeletesubtree(root: Node|None, value):
+    pass
+def treebalance(root: Node|None):
+    pass
+
+
+class Tree():
+    def __init__(self, sorted:list) -> None:
+        self.root = treebuild(None, sorted)
+    def max(self):
+        return treemax(self.root)
+    def min(self):
+        return treemin(self.root)
 
 
 
@@ -88,7 +123,8 @@ def main():
     arr = [8, 2, 5, 14, 10, 12, 13, 6, 9]
     arr.sort()
     root = treebuild(root, arr)
-    treesearch(root, 13)
+    treesearchprint(root, 14)
+    print(treegetlevel(root, 2))
 
 if __name__ == "__main__":
     main()
