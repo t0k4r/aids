@@ -310,9 +310,9 @@ class Tree():
     def preorder(self):
         preorder_traversal(self.root)
     def max(self):
-        return find_max(self.root,self.root.value)#type: ignore
+        return find_max(self.root,self.root.value) #type: ignore
     def min(self):
-        return find_min(self.root,self.root.value)#type: ignore
+        return find_min(self.root,self.root.value) #type: ignore
     def searchprint(self ,value):
         if self.root == None: raise Exception("404")
         rt = ""
@@ -355,8 +355,10 @@ class Tree():
     def balance(self):
         self.root = balance_tree(self.root)
 
+import time
+
 def main():
-    t = Tree([8, 2, 5, 14, 10, 12, 13, 6, 9])
+    t = Tree([5, 3, 7, 1, 4, 6, 8])
     while True:
         c = int(input("""procedury: 
     0) exit
@@ -366,6 +368,7 @@ def main():
     4) preorder,delete
     5) równoważenie
 prompt: """))
+        ti = time.time()
         match c:
             case 0: break
             case 1:
@@ -393,7 +396,7 @@ prompt: """))
                 t.balance()
                 preorder_traversal(t.root)
                 print()                
-
+        print("took", time.time()-ti)
 
 if __name__ == "__main__":
     main()

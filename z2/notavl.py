@@ -1,40 +1,9 @@
-def deletenode(root, key):
-    if root == None:
-        return root
-    if root.value == key and root.left == None and root.right == None:
-        return None
-
-    if root.value == key and root.left == None:
-        return root.right
-    if root.value == key and root.right == None:
-        return root.left
-    if root.value == key:
-        successor = treemin(root.right)
-        root.right = deletenode(root.right, successor)
-        root.value = successor
-    
-    root.left = deletenode(root.left, key)
-    root.right = deletenode(root.right, key)
-
-    return root
-
-def deletesubtree(root, value):
-    if root == None:
-        return
-    if root.left and root.left.value == value:
-        root.left = None
-    elif root.right and root.right.value == value:
-        root.right = None
-    else:
-        deletesubtree(root.left, value)
-        deletesubtree(root.right, value)
-
 class Node():
     def __init__(self, value):
         self.value = value
         self.left: Node|None = None
         self.right: Node|None = None
-        self.height: int = 1
+        self.height = 1
 
 def treebuild(root: Node|None, sorted: list, height=1) -> Node|None:
     if len(sorted) == 0: return root
@@ -46,45 +15,82 @@ def treebuild(root: Node|None, sorted: list, height=1) -> Node|None:
     root.right = treebuild(root.right, sorted[i+1:len(sorted)], height+1)
     return root
 
+def treegetmin(root: Node|None)-> Node:
+    if root == None:
+        raise Exception("404")
+    elif root.left == None:
+        return root
+    return treegetmin(root.left)
 
-def treesearchprint(root:Node|None ,value):
-    if root == None: raise Exception("404")
-    rt = ""
-    now = root
-    while now != None:
-        rt += f"Node({now.value})"
-        if now.value > value:
-            rt+=f".left -> "
-            now = now.left
-        elif now.value < value:
-            rt+=f".right -> "
-            now = now.right
-        else:
-            print(rt) 
-            return
-    raise Exception("404")
+def treegetheight(root):
+    if root == None:
+        return 0
+    return root.height
 
-def treesubtree(root: Node|None, value):
-    if root == None: raise Exception("404")
-    now = root
-    while now != None:
-        if now.value > value:
-            now = now.left
-        elif now.value < value:
-            now = now.right
-        else:
-            return now
-    raise Exception("404")
+def treegetbalance(root):
+    if root == None:
+        return 0
+    return treegetheight(root.left) - treegetheight(root.right)
 
-def treegetlevel(root: Node|None, height:int)->list:
-    values = []
-    if root == None: pass
-    elif root.height < height:
-        values.extend(treegetlevel(root.left, height))
-        values.extend(treegetlevel(root.right, height))
-    elif root.height == height:
-        values.append(root.value)     
-    return values
+def treedelete(root: Node|None, value):
+    if root == None:
+        return root
+
+    elif value < root.value:
+        root.left = treedelete(root.left, value)
+    elif value > root.value:
+        root.right = treedelete(root.right, value)
+    else:
+        if root.left == None:
+            ret = root.right
+            root = None
+            return ret
+
+        elif root.right == None:
+            ret = root.left
+            root = None
+            return ret
+
+        min = treegetmin(root.right)
+        root.value = min.value 
+        root.right = treedelete(root.right,min.value)
+
+    if root == None:
+        return root
+
+    root.height = 1 + max(treegetheight(root.left),treegetheight(root.right))
+
+    balance = treegetbalance(root)
+    if balance > 1 and treegetbalance(root.left) >= 0:
+        return treerightrotate(root)
+    if balance < -1 and treegetbalance(root.right) <= 0:
+        return treeleftrotate(root)
+    if balance > 1 and treegetbalance(root.left) < 0:
+        root.left = treeleftrotate(root.left)
+        return treerightrotate(root)
+    if balance < -1 and treegetbalance(root.right) > 0:
+        root.right = treerightrotate(root.right)
+        return treeleftrotate(root)
+
+    return root
+
+def treeleftrotate(z):
+    y = z.right
+    t = y.left
+    y.left = z
+    z.right = t
+    z.height = 1 + max(treegetheight(z.left), treegetheight(z.right))
+    y.height = 1 + max(treegetheight(y.left), treegetheight(y.right))
+    return y
+
+def treerightrotate(z):
+    y = z.left
+    t = y.right
+    y.right = z
+    z.left = t
+    z.height = 1 + max(treegetheight(z.left),treegetheight(z.right))
+    y.height = 1 + max(treegetheight(y.left),treegetheight(y.right))
+    return y
 
 def treemin(root:Node|None):
     now = root
@@ -107,13 +113,6 @@ def preorder(root: Node|None):
     preorder(root.left)
     preorder(root.right)
 
-def inorder(root: Node|None):
-    if root == None:
-        return
-    inorder(root.right)
-    print(root.value)
-    inorder(root.left)
-
 def inorderdesc(root: Node|None):
     if root == None:
         return
@@ -121,26 +120,7 @@ def inorderdesc(root: Node|None):
     print(root.value, end=" ")
     inorderdesc(root.left)
 
-def treedeletenode(root: Node|None, value):
-    if root == None: return None
-    elif root.value == value and root.left == None and root.right == None:
-        return None
-    elif root.value == value and root.left == None and root.right != None:
-        return root.right
-    elif root.value == value and root.left != None and root.right == None:
-        return root.left
-    elif root.value == value:
-        return None
-    else:
-        return root
-def treedeletesubtree(root: Node|None, value):
-    pass
-def treebalance(root: Node|None):
-    pass
-
-import dsw
-
-class Tree():
+class Tree(object):
     def __init__(self, sorted:list) -> None:
         self.root = treebuild(None, sorted)
     def max(self):
@@ -178,24 +158,12 @@ class Tree():
         return -1
     def finddelete(self, value):
         print("poziom", self.searchlevel(value))
-        self.root = deletenode(self.root, value)
-        self.balance()
+        self.root = treedelete(self.root, value)
     def desc(self):
         inorderdesc(self.root)
     def subdelete(self, value):
-        deletesubtree(self.root, value)
-        self.balance()
-    def balance(self):
-        self.root = treebuild(None, inorderlist(self.root))
-        
-def inorderlist(root: Node|None):
-    arr = []
-    if root == None:
-        return arr
-    arr.extend(inorderlist(root.left))
-    arr.append(root.value)
-    arr.extend(inorderlist(root.right))
-    return arr
+        pass
+
 
 def main():
     t = Tree(sorted([8, 2, 5, 14, 10, 12, 13, 6, 9]))
@@ -217,6 +185,7 @@ prompt: """))
             case 2: 
                 v = int(input("value: "))
                 t.finddelete(v)
+                preorder(t.root)
             case 3:
                 t.desc()
                 print()
@@ -227,7 +196,7 @@ prompt: """))
                 t.subdelete(v)
                 preorder(t.root)
                 print()
-
+             
 
 
 if __name__ == "__main__":
