@@ -300,7 +300,7 @@ def balance_tree(root):
     return root
 
 
-
+import dsw
 
 class Tree():
     def __init__(self, arr: list) -> None:
@@ -353,7 +353,8 @@ class Tree():
     def subdelete(self, value):
         delete_subtree(self.root, value)
     def balance(self):
-        self.root = balance_tree(self.root)
+        self.root = dsw.balanceBST(self.root)
+        # self.root = balance_tree(self.root)
 
 import time
 

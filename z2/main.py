@@ -1,6 +1,7 @@
 import time
 import avl
 def testavl(arr:list):
+    print("AVL")
     arr.sort()
     t = avl.Tree(arr)
     ti = time.time()
@@ -12,6 +13,7 @@ def testavl(arr:list):
 
 import bst
 def testbst(arr):
+    print("BST")
     t = bst.Tree(arr)
     ti = time.time()
     t.min()
