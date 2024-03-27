@@ -140,6 +140,8 @@ def treebalance(root: Node|None):
 
 import dsw
 
+import bst
+
 class Tree():
     def __init__(self, sorted:list) -> None:
         self.root = treebuild(None, sorted)
@@ -177,7 +179,9 @@ class Tree():
             i+=1
         return -1
     def finddelete(self, value):
-        print("poziom", self.searchlevel(value))
+        i = self.searchlevel(value)
+        print("poziom", i )
+        bst.print_nodes_at_level(self.root, i)
         self.root = deletenode(self.root, value)
         self.balance()
     def desc(self):

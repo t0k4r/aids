@@ -52,6 +52,8 @@ def find_path_to_max(root, maks):
     return None
 
 
+
+
 def find_min(node, min_value):
     if node is not None:
         if node.value < min_value:
@@ -344,7 +346,10 @@ class Tree():
         return -1
     
     def finddelete(self,value):
-        print("poziom", self.searchlevel(value))
+        i = self.searchlevel(value)
+        print("poziom", i)
+        print_nodes_at_level(self.root, i)
+        print()
         self.root = delete_node(self.root, value)
     def desc(self):
         inorder_reverse_traversal(self.root)
@@ -359,7 +364,9 @@ class Tree():
 import time
 
 def main():
-    t = Tree([5, 3, 7, 1, 4, 6, 8])
+    # t = Tree([5, 3, 7, 1, 4, 6, 8])
+    t = Tree([7,2,12,1,6,8,13,4,10,3,5,9,11])
+
     while True:
         c = int(input("""procedury: 
     0) exit
@@ -391,7 +398,6 @@ prompt: """))
                 preorder_traversal(t.root)
                 print()
             case 5:
-                print("TODO test this!!!")
                 preorder_traversal(t.root)
                 print()
                 t.balance()
