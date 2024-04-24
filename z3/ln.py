@@ -1,38 +1,67 @@
 
+def read_graph_from_input():
+    # Wczytywanie liczby wierzchołków i krawędzi
+    num_vertices, num_edges = map(int, input("Podaj liczbę wierzchołków i liczbę krawędzi oddzielone spacją: ").split())
+    graph = Graph()
+    for i in range(num_vertices):
+        graph.push(i+1)
+    print("Podaj pary krawędzi (oddzielone spacją):")
+    # Dodawanie krawędzi na podstawie danych wprowadzonych przez użytkownika
+    for _ in range(num_edges):
+        start, end = map(int, input().split())
+        graph.edge(start, end)
+    return graph
 
+def read_graph_from_file(filename):
+    # Wczytywanie grafu z pliku tekstowego
+    with open(filename, 'r') as file:
+        num_vertices, num_edges = map(int, file.readline().split())
+        graph = Graph()
+        for i in range(num_vertices):
+            graph.push(i+1)
+        # Dodawanie krawędzi na podstawie danych z pliku
+        for _ in range(num_edges):
+            start, end = map(int, file.readline().split())
+            graph.edge(start, end)
+        return graph
+
+import time
 def main():
-    g = Graph()
-    for i in range(10):
-        g.push(i+1)
-    g.edge(1,2)
-    g.edge(1,10)
-    g.edge(2,3)
-    g.edge(2,7)
-    g.edge(3,4)
-    g.edge(4,6)
-    g.edge(5,2)
-    g.edge(5,7)
-    g.edge(6,9)
-    g.edge(7,6)
-    g.edge(7,8)
-    g.edge(7,9)
-    g.edge(8,4)
-    g.edge(8,6)
-    g.edge(8,9)
-    g.edge(10,5)
-    g.edge(10,6)
-    # print(g.Khan())
-    # for i in range(5):
+    choice = input("Czy chcesz wczytać graf z pliku? (T/N): ").upper()
+    if choice == "T":
+        filename = input("Podaj nazwę pliku z grafem: ")
+        graph = read_graph_from_file(filename)
+    else:
+        graph = read_graph_from_input()
+
+    start = time.time()
+    sorted_order = graph.Khan()
+    end = time.time()
+    if sorted_order is None:
+        print("Graf zawiera cykl. Sortowanie niemożliwe.")
+    else:
+        print("Posortowana kolejność wierzchołków:", sorted_order, end-start)
+    # g = Graph()
+    # for i in range(10):
     #     g.push(i+1)
     # g.edge(1,2)
-    # g.edge(2,4)
-    # g.edge(2,5)
-    # g.edge(3,1)
-    # g.edge(3,2)
+    # g.edge(1,10)
+    # g.edge(2,3)
+    # g.edge(2,7)
     # g.edge(3,4)
-    # g.edge(5,1)
-    # g.edge(5,4)
-    print(g.Trjan())
+    # g.edge(4,6)
+    # g.edge(5,2)
+    # g.edge(5,7)
+    # g.edge(6,9)
+    # g.edge(7,6)
+    # g.edge(7,8)
+    # g.edge(7,9)
+    # g.edge(8,4)
+    # g.edge(8,6)
+    # g.edge(8,9)
+    # g.edge(10,5)
+    # g.edge(10,6)
+    # print(g.Khan())
 
 
 class Graph():
