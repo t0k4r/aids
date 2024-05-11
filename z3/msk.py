@@ -10,7 +10,6 @@ class Graph:
         # Dodanie krawędzi do macierzy sąsiedztwa oraz aktualizacja stopni wejściowych
         start-=1
         end-=1
-        print(start, end)
         self.adj_matrix[start][end] = 1
         self.in_degree[end] += 1
 
