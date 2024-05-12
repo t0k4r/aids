@@ -112,14 +112,6 @@ g.edge(3,7)
 g.edge(5,6)
 g.edge(6,5)
 
-# g.edge(1,2)
-# g.edge(2,4)
-# g.edge(2,5)
-# g.edge(3,1)
-# g.edge(3,2)
-# g.edge(4,3)
-# g.edge(5,1)
-# g.edge(5,4)
 
 g.build()
 for i in range(7):
