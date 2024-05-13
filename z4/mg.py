@@ -169,63 +169,53 @@ class GraphBuilder():
 
         return Graph(self.matrix)
 
+import gen
 def cyklHamiltona():
-    b = GraphBuilder(6)
-    b.edge(1,2)
-    b.edge(2,3)
-    b.edge(2,5)
-    b.edge(3,1)
-    b.edge(3,4)
-    b.edge(4,6)
-    b.edge(5,3)
-    b.edge(5,4)
-    b.edge(6,1)
+    n,s = 15,90
+    h = gen.directed_hamiltonian(n,s)
+    b = GraphBuilder(n)
+    for i, j in h.edges:
+        print(i,j)
+        b.edge(i,j)
+        pass
+
+    # b = GraphBuilder(10)
+    # b.edge(1,2)
+    # b.edge(2,3)
+    # b.edge(2,5)
+    # b.edge(3,1)
+    # b.edge(3,4)
+    # b.edge(4,6)
+    # b.edge(5,3)
+    # b.edge(5,4)
+    # b.edge(6,1)
     g = b.build()
     print(g.RobertsFlores())
+    # b = GraphBuilder(10)
+    # b.edge(1,2)
+    # b.edge(2,3)
+    # b.edge(2,5)
+    # b.edge(3,1)
+    # b.edge(3,4)
+    # b.edge(4,6)
+    # b.edge(5,3)
+    # b.edge(5,4)
+    # b.edge(6,1)
 
 import gen
 
 import networkx as nx
 def cyklEulera():
-    n_values = [10, 15, 20]  # Adjust according to your needs
-    s_values = [10, 20, 30, 40, 50, 60, 70, 80, 90]
-    i = 0
-    j = 0
-    while True:
-        try:
-            n = n_values[i]
-            s = s_values[j]
-            gg = gen.generate_eulerian_digraph4(n,s/100)
-            print(n,s)
-            raise Exception("")
-            break
-        except: 
-            j+=1
-            if j == len(s_values):
-                i+=1
-                j = 0
-            continue
-    # print(nx.is_eulerian(gg))
-    # nx.to_directed(gg)
-    # print(nx.has_eulerian_path(gg))
-    print(list(nx.eulerian_circuit(gg)))
-    # return
-    b = GraphBuilder(n)
+    b = GraphBuilder(3)
     # return
     # print("loop")
-    for i,j in gg.edges:
-        # print(i,j)
-        b.edge(i,j)
-    # print("endloop")
-    # b.edge(1,2)
-    # b.edge(2,3)
-    # b.edge(3,1)
+    # for i,j in gg.edges:
     g = b.build()
     print(g.ln())
     print(g.Fleury())
 
 if __name__ == "__main__":
-    # cyklHamiltona()
-    cyklEulera()
+    cyklHamiltona()
+    # cyklEulera()
     pass
 
