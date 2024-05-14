@@ -52,15 +52,16 @@ def hamiltonian_cycle(graph):
         print("NIE MA")
         return False
     else:
-        print("Jest", end="")
-        for i in path:
-            print(i, end=" ")
-        print(path[0])
-        return path
+        path.append(path[0])
+        # print("Jest", end="")
+        # for i in path:
+            # print(i, end=" ")
+        # print(path[0])
+        return list(map(lambda x: x+1, path))
 
 import gen
 def gen_graph():
-    n,s = 15, 20
+    n,s = 15, 50
     # Wczytaj liczbę wierzchołków i krawędzi
     # vertices, edges = map(int, input().split())
 
@@ -85,8 +86,13 @@ def gen_graph():
 
     return graph
 
-g=gen_graph()
-print(hamiltonian_cycle(g))
+def cyklHamiltona():
+    g=gen_graph()
+    print(hamiltonian_cycle(g))
+    pass
+
+if __name__ == "__main__":
+    cyklHamiltona()
 # Przykładowe użycie
 # graph = read_graph()
 # cycle = hamiltonian_cycle(graph)

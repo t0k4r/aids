@@ -9,8 +9,10 @@ def directed_hamiltonian(n: int, s: float):
     s/=100
     full = (n*(n-1))/2
     while s > G.number_of_edges()/full:
-        G.add_edge(random.randint(0,n-1), random.randint(0,n-1))
-
+        i,j = random.randint(0,n-1), random.randint(0,n-1)
+        if not G.has_edge(i,j):
+            G.add_edge(i,j)
+    # print(nx.tournament.hamiltonian_path(G))
     return G
 
 def undirected_hamiltonian(n: int, s: float):
@@ -21,15 +23,22 @@ def undirected_hamiltonian(n: int, s: float):
     s/=100
     full = (n*(n-1))/2
     while s > G.number_of_edges()/full:
-        G.add_edge(random.randint(0,n-1), random.randint(0,n-1))
+        i,j = random.randint(0,n-1), random.randint(0,n-1)
+        if not G.has_edge(i,j):
+            G.add_edge(i,j)
 
     return G
 
 def directed_eulerian(n:int, s:float):
-    G = undirected_hamiltonian(n,s)
+    G = undirected_hamiltonian(n,  s)
     G2 = nx.DiGraph()
     for i, j in nx.eulerian_circuit(nx.eulerize(G)):
         G2.add_edge(i,j)
-    print(nx.is_eulerian(G2))
+        print(f"{i}->{j}->", end="")
 
-directed_eulerian(10,50)
+    print()
+    if not nx.is_eulerian(G2):
+        return directed_eulerian(n,s)
+    return G2
+
+# directed_eulerian(10,10)
