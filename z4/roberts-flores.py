@@ -49,8 +49,9 @@ def hamiltonian_cycle(graph):
     path = [-1] * len(graph)
     path[0] = 0
     if not hamiltonian_cycle_util(graph, path, 1):
-        print("NIE MA")
-        return False
+        # print("NIE MA")
+        raise Exception("Graf wejściowy nie zawiera cyklu")
+        # return False
     else:
         path.append(path[0])
         # print("Jest", end="")
@@ -61,10 +62,9 @@ def hamiltonian_cycle(graph):
 
 import gen
 def gen_graph():
-    n,s = 15, 50
+    n,s = 15, 90
     # Wczytaj liczbę wierzchołków i krawędzi
     # vertices, edges = map(int, input().split())
-
     vertices = n
     # Inicjalizuj macierz sąsiedztwa
     graph = []
@@ -83,8 +83,24 @@ def gen_graph():
     #     # Dodaj krawędź do grafu (graf nieskierowany)
     #     graph[v1][v2] = 1
     #     graph[v2][v1] = 1
-
     return graph
+
+
+def read_graph_from_file(filename):
+    # Wczytywanie grafu z pliku tekstowego
+    with open(filename, 'r') as file:
+        num_vertices, num_edges = map(int, file.readline().split())
+        graph = []
+        for i in range(num_vertices):
+            row = [0] * num_vertices
+            graph.append(row)
+        # Dodawanie krawędzi na podstawie danych z pliku
+        for _ in range(num_edges):
+            i, j = map(int, file.readline().split())
+            graph[i][j] = 1
+            graph[j][i] = 1
+        return graph
+
 
 def cyklHamiltona():
     g=gen_graph()

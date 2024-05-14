@@ -138,6 +138,8 @@ class GraphBuilder():
 
         return self.matrix
 
+
+
 def RobertsFlores(matrix: list[list[int]]):
     # print("ROBERTSFLORES")
     N = len(matrix)
@@ -190,33 +192,121 @@ def RobertsFlores(matrix: list[list[int]]):
     return list(map(lambda x:x+1, PATH))
 
 
+def successors(matrix,v:int) -> list[int]:
+    N = len(matrix)
+    s = []
+    val = matrix[v][N]
+    if val != 0: s.append(matrix[v][N]-1)
+    for i in range(N):
+        if matrix[v][N+3] != 0: s.append(matrix[v][N+3]-1)
+        val = matrix[v][i]
+        if val<=0 or (val>N and val<2*N): continue
+        if val <= N: s.append(val-1)
+        else:
+            val = val-2*N -1
+            if val <= 0 : continue
+            s.append(val)
+    return list(set(s))
+
+def predeccessors(matrix,v:int) -> list[int]:
+    N = len(matrix)
+    s = []
+    val = matrix[v][N]
+    if val != 0: s.append(matrix[v][N+1]-1)
+    for i in range(N):
+        if matrix[v][N+3] != 0: s.append(matrix[v][N+3]-1)
+        val = matrix[v][i]
+        if val<=0 or val <=N: continue
+        if (val>N and val<2*N): s.append(val-1-N)
+        else:
+            val = val-2*N -1
+            if val <= 0 : continue
+            s.append(val)
+    return list(set(s))
+
+
+
+
+def dfs(matrix, v1, visited, deleted):
+    visited[v1] = True
+    out = [v1]
+    for v2 in successors(matrix,v1):
+        if (v1,v2) in deleted: continue
+        if not visited[v2]: out.extend(dfs(matrix, v2, visited, deleted))
+    return out
+
+def is_bridge(matrix, u ,v, deleted:list[tuple[int,int]]):
+    visited = [False] * len(matrix)
+    A = dfs(matrix, v, visited,deleted)
+    deleted.append((u,v))
+    visited = [False] * len(matrix)
+    B = dfs(matrix, v, visited, deleted)
+    deleted.pop()
+    return len(A) != len(B)
+
 def Fleury(matrix: list[list[int]]):
     N = len(matrix)
-    def successors(v:int) -> list[int]:
-        s = []
-        s.append(matrix[v][N]-1)
+    deleted:list[tuple[int,int]] = []
+    # j = 0
+    def ok():
         for i in range(N):
-            val = matrix[v][i]
-            if val<=0 or (val>N and val<2*N): continue
-            if val <= N:
-                s.append(val-1)
-            else:
-                val = val-2*N -1
-                if val <= 0 : continue
-                s.append(val)
-        l = list(set(s))
-        l.sort()
-        return l
-    delege = {}
-    START = 0
+            s = successors(matrix, i)
+            p = predeccessors(matrix, i)
+            if len(s) != len(p):
+                return False
+        return True
+        # print(j,len(s),len(p), s, p)
+        # j+=1
+    def find_eulerian_cycle(matrix, u, cycle):
+        nonlocal deleted
+        bs = []
+        for v in successors(matrix,u):
+            if (u,v) in deleted: continue
+            if is_bridge(matrix,u,v, deleted): 
+                bs.append((u,v))
+                continue
+            deleted.append((u,v))
+            # matrix[u][v] = 0
+            # matrix[v][u] = 0
+            find_eulerian_cycle(matrix, v, cycle)
+        for u,v in bs:
+            deleted.append((u,v))
+
+            # matrix[u][v] = 0
+            # matrix[v][u] = 0
+            find_eulerian_cycle(matrix, v, cycle)
+        cycle.append(u)
+
+    if not ok():
+        raise Exception("Graf wejściowy nie zawiera cyklu.")
+    
+    start_vertex = 0  # Wybierz dowolny wierzchołek startowy
+    cycle = []
+    find_eulerian_cycle(matrix, start_vertex, cycle)
+    return cycle[::-1]
+
+
+    
+
+def read_graph_from_file(filename):
+    # Wczytywanie grafu z pliku tekstowego
+    with open(filename, 'r') as file:
+        num_vertices, num_edges = map(int, file.readline().split())
+        b = GraphBuilder(num_vertices)
+        # Dodawanie krawędzi na podstawie danych z pliku
+        for _ in range(num_edges):
+            i, j = map(int, file.readline().split())
+            b.edge(i,j)
+        return b.build()
 
 def cyklHamiltona():
     n, s = 15, 90
     h = gen.directed_hamiltonian(n,s)
     b = GraphBuilder(n)
     for i, j in h.edges:
-        # print(i+1,j+1)
+        # print(i,j)
         b.edge(i+1,j+1)
+    # print("DI")
     print(RobertsFlores(b.build()))
 
 
@@ -224,15 +314,19 @@ import gen
 
 import networkx as nx
 def cyklEulera():
-    n,s = 10,    10
-    e = gen.directed_eulerian(n,s)
+    n,s = 10, 10
+    e = gen.directed_hamiltonian(n,s)
     b = GraphBuilder(n)
     for i,j in e.edges:
         print(i,j)
-        b.edge(i,j)
+        b.edge(i+1,j+1)
+    print("DI")
 
+    print(Fleury(b.build()))
+    g = Graph(b.build())
+    print(g.Fleury())
 if __name__ == "__main__":
-    cyklHamiltona()
-    # cyklEulera()
+    # cyklHamiltona()
+    cyklEulera()
     pass
 

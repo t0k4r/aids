@@ -31,12 +31,16 @@ def undirected_hamiltonian(n: int, s: float):
 
 def directed_eulerian(n:int, s:float):
     G = undirected_hamiltonian(n,  s)
+    G.add_edge(3,5)
+    G.add_edge(5,8)  
+    G.add_edge(8,3)
+    print(nx.is_eulerian(G))
+
+    return G
     G2 = nx.DiGraph()
     for i, j in nx.eulerian_circuit(nx.eulerize(G)):
         G2.add_edge(i,j)
-        print(f"{i}->{j}->", end="")
-
-    print()
+        # pass
     if not nx.is_eulerian(G2):
         return directed_eulerian(n,s)
     return G2
