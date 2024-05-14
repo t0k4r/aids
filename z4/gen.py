@@ -30,7 +30,7 @@ def undirected_hamiltonian(n: int, s: float):
     return G
 
 def directed_eulerian(n:int, s:float):
-    G = undirected_hamiltonian(n,  s)
+    G = directed_hamiltonian(n,  s)
     G.add_edge(3,5)
     G.add_edge(5,8)  
     G.add_edge(8,3)

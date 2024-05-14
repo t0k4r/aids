@@ -315,7 +315,7 @@ import gen
 import networkx as nx
 def cyklEulera():
     n,s = 10, 10
-    e = gen.directed_hamiltonian(n,s)
+    e = gen.directed_eulerian(n,s)
     b = GraphBuilder(n)
     for i,j in e.edges:
         print(i,j)
@@ -323,8 +323,8 @@ def cyklEulera():
     print("DI")
 
     print(Fleury(b.build()))
-    g = Graph(b.build())
-    print(g.Fleury())
+    # g = Graph(b.build())
+    # print(g.Fleury())
 if __name__ == "__main__":
     # cyklHamiltona()
     cyklEulera()
