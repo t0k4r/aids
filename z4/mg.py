@@ -12,44 +12,6 @@ class Graph():
             successors[i] = list(set(successors[i]))
         return successors
     
-    def RobertsFlores(self):
-        n = len(self.matrix)
-        successors = self.ln()
-
-        def Hamiltonian(v, O, visited, Path, k, start, n):
-            O[v] = True
-            visited += 1
-            for i in successors[v]:
-                if i == start and visited == n:
-                    return True
-                if not O[i]:
-                    if Hamiltonian(i, O, visited, Path, k, start, n):
-                        Path[k] = v
-                        k += 1
-                        return True
-            O[v] = False
-            visited -= 1
-            return False
-
-        def Hcycle():
-                O = [False] * (n + 1)
-                Path = [0] * (n + 1)
-                Path[1] = start = 1
-                visited = 0
-                k = 2
-                if Hamiltonian(start, O, visited, Path, k, start, n): 
-                    npath = []
-                    last = 0
-                    while len(npath) != len(Path):
-                        v = successors[last][Path[last]]
-                        npath.append(v+1)
-                        last = v
-                        pass
-                    return npath                    
-                raise Exception("Graf wejściowy nie zawiera cyklu")
-        
-        return Hcycle()
-
     def Fleury(self):
         graph: list[list[int]] = self.ln()
         in_degrees = [0] * len(graph)
@@ -77,27 +39,17 @@ class Graph():
         euler_path.reverse()
         return list(map(lambda x: x+1,euler_path))
 
-  
-        
-        
-
 class GraphBuilder():
     def __init__(self, n) -> None:
         self.matrix: list[list[int]] = [[ 0 for _ in range(n+4)] for _ in range(n) ]
     def edge(self, efrom, eto):
         self.matrix[efrom-1][eto-1] = 1
-
-    def edge2(self, e1,e2):
-        self.matrix[e1-1][e2-1] = 1
-        self.matrix[e2-1][e1-1] = 1
-
     def build(self):
         n = len(self.matrix)
         ln = [[] for _ in range(n)]
-        lp =  [[] for _ in range(n)]
+        lp = [[] for _ in range(n)]
         lb = [[] for _ in range(n)]
         lc = [[] for _ in range(n)]
-        
         for i in range(n):
             for j in range(n):
                 if self.matrix[i][j] == 0: continue
@@ -115,9 +67,7 @@ class GraphBuilder():
             for j in range(n):
                 if j not in ln[i] and j not in lp[i] and j not in lc[i]:
                     lb[i].append(j)
-            
-
- 
+    
         for i in range(n):
             for j in range(n):
                 self.matrix[i][j] = 0
@@ -167,40 +117,78 @@ class GraphBuilder():
                     self.matrix[i][j] = lc[i][lci]+1+ 2*n
             except: continue
 
-        return Graph(self.matrix)
+        return self.matrix
 
-import gen
+def RobertsFlores(matrix: list[list[int]]):
+    N = len(matrix)
+    O = [False for _ in range(N+1)]
+    PATH = []
+    def successors(v:int) -> list[int]:
+        s = []
+        s.append(matrix[v][N]-1)
+        for i in range(N):
+            val = matrix[v][i]
+            if val<=0 or (val>N and val<2*N): continue
+            if val <= N:
+                s.append(val-1)
+            else:
+                val = val-2*N -1
+                if val <= 0 : continue
+                s.append(val)
+        l = list(set(s))
+        l.sort()
+        return l
+    
+    START = 0
+    def hamiltonian(v:int)->bool:
+        O[v] = True
+        for i in successors(v):
+            if i == START and sum(O) == N:
+                PATH.append(v)
+                return True
+            if not O[i]:
+                if hamiltonian(i):
+                    PATH.append(v)
+                    return True
+        O[v] = False
+        return False
+    O[0]= True
+    PATH.append(START)
+    if not hamiltonian(START):
+        raise Exception("Graf wejściowy nie zawiera cyklu")
+    PATH.reverse()
+    return list(map(lambda x:x+1, PATH))
+
+
+def Fleury(matrix: list[list[int]]):
+    N = len(matrix)
+    def successors(v:int) -> list[int]:
+        s = []
+        s.append(matrix[v][N]-1)
+        for i in range(N):
+            val = matrix[v][i]
+            if val<=0 or (val>N and val<2*N): continue
+            if val <= N:
+                s.append(val-1)
+            else:
+                val = val-2*N -1
+                if val <= 0 : continue
+                s.append(val)
+        l = list(set(s))
+        l.sort()
+        return l
+    delege = {}
+    START = 0
+
 def cyklHamiltona():
-    n,s = 15,90
+    n, s = 5, 90
     h = gen.directed_hamiltonian(n,s)
     b = GraphBuilder(n)
     for i, j in h.edges:
-        print(i,j)
-        b.edge(i,j)
-        pass
+        print(i+1,j+1)
+        b.edge(i+1,j+1)
+    print(RobertsFlores(b.build()))
 
-    # b = GraphBuilder(10)
-    # b.edge(1,2)
-    # b.edge(2,3)
-    # b.edge(2,5)
-    # b.edge(3,1)
-    # b.edge(3,4)
-    # b.edge(4,6)
-    # b.edge(5,3)
-    # b.edge(5,4)
-    # b.edge(6,1)
-    g = b.build()
-    print(g.RobertsFlores())
-    # b = GraphBuilder(10)
-    # b.edge(1,2)
-    # b.edge(2,3)
-    # b.edge(2,5)
-    # b.edge(3,1)
-    # b.edge(3,4)
-    # b.edge(4,6)
-    # b.edge(5,3)
-    # b.edge(5,4)
-    # b.edge(6,1)
 
 import gen
 
@@ -210,9 +198,9 @@ def cyklEulera():
     # return
     # print("loop")
     # for i,j in gg.edges:
-    g = b.build()
-    print(g.ln())
-    print(g.Fleury())
+    # g = b.build()
+    # print(g.ln())
+    # print(g.Fleury())
 
 if __name__ == "__main__":
     cyklHamiltona()

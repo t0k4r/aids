@@ -58,10 +58,38 @@ def hamiltonian_cycle(graph):
         print(path[0])
         return path
 
+import gen
+def gen_graph():
+    n,s = 15, 20
+    # Wczytaj liczbę wierzchołków i krawędzi
+    # vertices, edges = map(int, input().split())
 
+    vertices = n
+    # Inicjalizuj macierz sąsiedztwa
+    graph = []
+    for i in range(vertices):
+        row = [0] * vertices
+        graph.append(row)
+    G = gen.directed_hamiltonian(n,s)
+    # Wczytaj krawędzie
+    for i, j in G.edges:
+        graph[i][j] = 1
+        graph[j][i] = 1
+    #     pass
+    # for i in range(edges):
+    #     # Wczytaj parę wierzchołków
+    #     v1, v2 = map(int, input().split())
+    #     # Dodaj krawędź do grafu (graf nieskierowany)
+    #     graph[v1][v2] = 1
+    #     graph[v2][v1] = 1
 
+    return graph
+
+g=gen_graph()
+print(hamiltonian_cycle(g))
 # Przykładowe użycie
-graph = read_graph()
-cycle = hamiltonian_cycle(graph)
-if cycle:
-    print("Hamiltonian cycle path:", cycle)
+# graph = read_graph()
+# cycle = hamiltonian_cycle(graph)
+# if cycle:
+#     print("Hamiltonian cycle path:", cycle)
+
