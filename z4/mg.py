@@ -313,10 +313,23 @@ def cyklHamiltona():
     # print("DI")
     print(RobertsFlores(b.build()))
 
+
+
 def genCyklHamiltona(n,s):
     h = gen.directed_hamiltonian(n,s)
     b = GraphBuilder(n)
     G = gen.directed_hamiltonian(n,s)
+    for i, j in G.edges:
+        # print(i,j)
+        b.edge(i+1,j+1)
+    # print("DI")
+    return b.build()
+
+
+def genCyklHamiltonaAcy(n,s):
+    h = gen.directed_hamiltonian(n,s)
+    b = GraphBuilder(n)
+    G = gen.directed_acy(n,s)
     for i, j in G.edges:
         # print(i,j)
         b.edge(i+1,j+1)

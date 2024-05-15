@@ -19,6 +19,7 @@ def read_graph():
     return graph
 
 
+
 def is_valid(v, k, graph, path):
     #czy krawędź pomiędzy ostatnio dodanym wierzchołkiem, a wierzchołkiem v
     if graph[path[k - 1]][v] == 0:
@@ -61,8 +62,8 @@ def hamiltonian_cycle(graph):
         return list(map(lambda x: x+1, path))
 
 import gen
-def gen_graph():
-    n,s = 5, 90
+def gen_graph(n,s):
+    # n,s = 5, 90
     # Wczytaj liczbę wierzchołków i krawędzi
     # vertices, edges = map(int, input().split())
     vertices = n
@@ -71,20 +72,56 @@ def gen_graph():
     for i in range(n):
         row = [0] * vertices
         graph.append(row)
-    G = gen.directed_hamiltonian(n,s)
+    G = gen.undirected_hamiltonian(n,s)
 
     # Wczytaj krawędzie
     # for i, j in G.edges:
-    edges = []
-    edges.append((1,2))
-    edges.append((1,4))
-    edges.append((2,4))
-    edges.append((3,4))
-    edges.append((3,5))
-    edges.append((5,4))
+    # edges = []
+    # edges.append((1,2))
+    # edges.append((1,4))
+    # edges.append((2,4))
+    # edges.append((3,4))
+    # edges.append((3,5))
+    # edges.append((5,4))
 
 
-    for i, j in edges:
+    for i, j in G.edges:
+        graph[i-1][j-1] = 1
+        graph[j-1][i-1] = 1
+    #     pass
+    # for i in range(edges):
+    #     # Wczytaj parę wierzchołków
+    #     v1, v2 = map(int, input().split())
+    #     # Dodaj krawędź do grafu (graf nieskierowany)
+    #     graph[v1][v2] = 1
+    #     graph[v2][v1] = 1
+    return graph
+
+
+def gen_graph_acy(n,s):
+    # n,s = 5, 90
+    # Wczytaj liczbę wierzchołków i krawędzi
+    # vertices, edges = map(int, input().split())
+    vertices = n
+    # Inicjalizuj macierz sąsiedztwa
+    graph = []
+    for i in range(n):
+        row = [0] * vertices
+        graph.append(row)
+    G = gen.directed_acy(n,s)
+
+    # Wczytaj krawędzie
+    # for i, j in G.edges:
+    # edges = []
+    # edges.append((1,2))
+    # edges.append((1,4))
+    # edges.append((2,4))
+    # edges.append((3,4))
+    # edges.append((3,5))
+    # edges.append((5,4))
+
+
+    for i, j in G.edges:
         graph[i-1][j-1] = 1
         graph[j-1][i-1] = 1
     #     pass
@@ -114,7 +151,7 @@ def read_graph_from_file(filename):
 
 
 def cyklHamiltona():
-    g=gen_graph()
+    g=gen_graph(5,90)
     print(hamiltonian_cycle(g))
     pass
 \
