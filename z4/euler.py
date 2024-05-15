@@ -168,7 +168,7 @@ import sys
 sys.setrecursionlimit(2137*420*69)
 import gen
 def gen_graph():
-    n,s = 10,10
+    n,s = 5,10
     G = gen.directed_eulerian(n,s)
     graph = []
     for i in range(n):
@@ -177,9 +177,23 @@ def gen_graph():
             row.append(0)
         graph.append(row)
 
-    for i, j in G.edges:
-        graph[i][j] = 1
-        graph[j][i] = 1
+    edges = []
+    edges.append((1,2))
+    edges.append((1,4))
+    edges.append((2,4))
+    edges.append((3,4))
+    edges.append((3,5))
+    edges.append((5,4))
+    # edges.append((1,3))
+    # edges.append((1,4))
+    # edges.append((2,4))
+    # edges.append((2,0))
+    # edges.append((3,4))
+    # edges.append((3,0))
+
+    for i, j in edges:
+        graph[i-1][j-1] = 1
+        graph[j-1][i-1] = 1
     for i in range(n):
         for j in range(n):
             print(graph[i][j],end="\t")

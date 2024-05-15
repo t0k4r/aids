@@ -224,9 +224,6 @@ def predeccessors(matrix,v:int) -> list[int]:
             s.append(val)
     return list(set(s))
 
-
-
-
 def dfs(matrix, v1, visited, deleted):
     visited[v1] = True
     out = [v1]
@@ -300,15 +297,31 @@ def read_graph_from_file(filename):
         return b.build()
 
 def cyklHamiltona():
-    n, s = 15, 90
+    n, s = 5, 90
     h = gen.directed_hamiltonian(n,s)
     b = GraphBuilder(n)
-    for i, j in h.edges:
+    edges = []
+    edges.append((1,3))
+    edges.append((1,4))
+    edges.append((2,4))
+    edges.append((2,0))
+    edges.append((3,4))
+    edges.append((3,0))
+    for i, j in edges:
         # print(i,j)
-        b.edge(i+1,j+1)
+        b.edge(i,j)
     # print("DI")
     print(RobertsFlores(b.build()))
 
+def genCyklHamiltona(n,s):
+    h = gen.directed_hamiltonian(n,s)
+    b = GraphBuilder(n)
+    G = gen.directed_hamiltonian(n,s)
+    for i, j in G.edges:
+        # print(i,j)
+        b.edge(i+1,j+1)
+    # print("DI")
+    return b.build()
 
 import gen
 
@@ -326,7 +339,7 @@ def cyklEulera():
     # g = Graph(b.build())
     # print(g.Fleury())
 if __name__ == "__main__":
-    # cyklHamiltona()
-    cyklEulera()
+    cyklHamiltona()
+    # cyklEulera()
     pass
 

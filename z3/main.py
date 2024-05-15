@@ -185,7 +185,8 @@ def khanl():
     # plt.show()
 
     ax = plt.subplot()
-    plt.xscale("log")
+    plt.yscale("log")
+    # plt.xscale("log")
     y =list(map(lambda x: x.avg(),lln))
     ax.plot(idx,y, label="lista następników")
     y =list(map(lambda x: x.avg(),lms))
@@ -243,9 +244,9 @@ def trianl():
 
 
 def main():
-    khann()
+    # khann()
     # triann()
-    # khanl()
+    khanl()
     # triann()
 
 if __name__ == "__main__":

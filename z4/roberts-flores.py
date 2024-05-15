@@ -62,20 +62,31 @@ def hamiltonian_cycle(graph):
 
 import gen
 def gen_graph():
-    n,s = 15, 90
+    n,s = 5, 90
     # Wczytaj liczbę wierzchołków i krawędzi
     # vertices, edges = map(int, input().split())
     vertices = n
     # Inicjalizuj macierz sąsiedztwa
     graph = []
-    for i in range(vertices):
+    for i in range(n):
         row = [0] * vertices
         graph.append(row)
     G = gen.directed_hamiltonian(n,s)
+
     # Wczytaj krawędzie
-    for i, j in G.edges:
-        graph[i][j] = 1
-        graph[j][i] = 1
+    # for i, j in G.edges:
+    edges = []
+    edges.append((1,2))
+    edges.append((1,4))
+    edges.append((2,4))
+    edges.append((3,4))
+    edges.append((3,5))
+    edges.append((5,4))
+
+
+    for i, j in edges:
+        graph[i-1][j-1] = 1
+        graph[j-1][i-1] = 1
     #     pass
     # for i in range(edges):
     #     # Wczytaj parę wierzchołków
@@ -106,7 +117,7 @@ def cyklHamiltona():
     g=gen_graph()
     print(hamiltonian_cycle(g))
     pass
-
+\
 if __name__ == "__main__":
     cyklHamiltona()
 # Przykładowe użycie
