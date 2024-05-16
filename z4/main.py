@@ -145,7 +145,7 @@ def mgEuler():
     print(X[0])
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
-    ax.set_title("macierz grafu cykl Hamiltona")
+    ax.set_title("macierz grafu cykl Eulera")
     ax.plot_surface(np.array(X).reshape((21, 9)), np.array(Y).reshape((21, 9)), np.array(Z).reshape((21, 9)), rstride=1, cstride=1 ) #type: ignore
     ax.set_xlabel('n')
     ax.set_ylabel('s')
@@ -170,7 +170,7 @@ def mgEulerAcy():
     print(X[0])
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
-    ax.set_title("macierz grafu cykl Hamiltona")
+    ax.set_title("macierz grafu acykliczny Eulera")
     ax.plot_surface(np.array(X).reshape((21, 9)), np.array(Y).reshape((21, 9)), np.array(Z).reshape((21, 9)), rstride=1, cstride=1 ) #type: ignore
     ax.set_xlabel('n')
     ax.set_ylabel('s')
@@ -197,7 +197,7 @@ def msEuler():
     print(X[0])
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
-    ax.set_title("macierz sąsiedztwa cykl Hamiltona")
+    ax.set_title("macierz sąsiedztwa cykl Eulera")
     ax.plot_surface(np.array(X).reshape((21, 9)), np.array(Y).reshape((21, 9)), np.array(Z).reshape((21, 9)), rstride=1, cstride=1 ) #type: ignore
     ax.set_xlabel('n')
     ax.set_ylabel('s')
@@ -222,7 +222,7 @@ def msEulerAcy():
     print(X[0])
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
-    ax.set_title("macierz sąsiedztwa acykliczny Hamiltona")
+    ax.set_title("macierz sąsiedztwa acykliczny Eulera")
     ax.plot_surface(np.array(X).reshape((21, 9)), np.array(Y).reshape((21, 9)), np.array(Z).reshape((21, 9)), rstride=1, cstride=1 ) #type: ignore
     ax.set_xlabel('n')
     ax.set_ylabel('s')
@@ -232,7 +232,9 @@ def msEulerAcy():
 
 def main():
     # ok()
-    # mgEulerAcy()
+    mgEuler()
+    mgEulerAcy()
+    msEuler()
     msEulerAcy()
     # msHamiltonAcy()
     # msHamilton()
