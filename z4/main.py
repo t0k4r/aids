@@ -126,10 +126,115 @@ def msHamiltonAcy():
     ax.set_zlabel('Time (s)')  #type: ignore
     plt.show()
 
+def mgEuler():
+    res = []
+    for n in range(5, 26, 1):
+        for s in range(10,91,10):
+            r = []
+            for _ in range(10):
+                
+                g = mg.genCyklEulera(n,s)
+                t = time.time()
+                try:
+                    print(mg.Fleury(g))
+                except:pass
+                r.append(time.time()-t)
+            res.append((n,s, sum(r)/4))
+
+    X,Y,Z = list(map(lambda x: x[0],res)),list(map(lambda x: x[1],res)),list(map(lambda x: x[2],res))
+    print(X[0])
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+    ax.set_title("macierz grafu cykl Hamiltona")
+    ax.plot_surface(np.array(X).reshape((21, 9)), np.array(Y).reshape((21, 9)), np.array(Z).reshape((21, 9)), rstride=1, cstride=1 ) #type: ignore
+    ax.set_xlabel('n')
+    ax.set_ylabel('s')
+    ax.set_zlabel('Time (s)')  #type: ignore
+    plt.show()
+
+def mgEulerAcy():
+    res = []
+    for n in range(5, 26, 1):
+        for s in range(10,91,10):
+            r = []
+            for _ in range(10):
+                g = mg.genCykeULERAcy(n,s)
+                t = time.time()
+                try:
+                    print(mg.Fleury(g))
+                except:pass
+                r.append(time.time()-t)
+            res.append((n,s, sum(r)/4))
+
+    X,Y,Z = list(map(lambda x: x[0],res)),list(map(lambda x: x[1],res)),list(map(lambda x: x[2],res))
+    print(X[0])
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+    ax.set_title("macierz grafu cykl Hamiltona")
+    ax.plot_surface(np.array(X).reshape((21, 9)), np.array(Y).reshape((21, 9)), np.array(Z).reshape((21, 9)), rstride=1, cstride=1 ) #type: ignore
+    ax.set_xlabel('n')
+    ax.set_ylabel('s')
+    ax.set_zlabel('Time (s)')  #type: ignore
+    plt.show()
+
+
+import euler
+def msEuler():
+    res = []
+    for n in range(5, 26, 1):
+        for s in range(10,91,10):
+            r = []
+            for _ in range(10):
+                g = euler.gen_graph(n,s)
+                t = time.time()
+                try:
+                    print(euler.Fleury(g))
+                except: pass
+                r.append(time.time()-t)
+            res.append((n,s, sum(r)/4))
+
+    X,Y,Z = list(map(lambda x: x[0],res)),list(map(lambda x: x[1],res)),list(map(lambda x: x[2],res))
+    print(X[0])
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+    ax.set_title("macierz sąsiedztwa cykl Hamiltona")
+    ax.plot_surface(np.array(X).reshape((21, 9)), np.array(Y).reshape((21, 9)), np.array(Z).reshape((21, 9)), rstride=1, cstride=1 ) #type: ignore
+    ax.set_xlabel('n')
+    ax.set_ylabel('s')
+    ax.set_zlabel('Time (s)')  #type: ignore
+    plt.show()
+
+def msEulerAcy():
+    res = []
+    for n in range(5, 26, 1):
+        for s in range(10,91,10):
+            r = []
+            for _ in range(10):
+                g = euler.gen_graph_acy(n,s)
+                t = time.time()
+                try:
+                    print(euler.Fleury(g))
+                except: pass
+                r.append(time.time()-t)
+            res.append((n,s, sum(r)/4))
+
+    X,Y,Z = list(map(lambda x: x[0],res)),list(map(lambda x: x[1],res)),list(map(lambda x: x[2],res))
+    print(X[0])
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+    ax.set_title("macierz sąsiedztwa acykliczny Hamiltona")
+    ax.plot_surface(np.array(X).reshape((21, 9)), np.array(Y).reshape((21, 9)), np.array(Z).reshape((21, 9)), rstride=1, cstride=1 ) #type: ignore
+    ax.set_xlabel('n')
+    ax.set_ylabel('s')
+    ax.set_zlabel('Time (s)')  #type: ignore
+    plt.show()
+
 
 def main():
     # ok()
-    msHamiltonAcy()
+    # mgEulerAcy()
+    msEulerAcy()
+    # msHamiltonAcy()
     # msHamilton()
 
 if __name__ == "__main__":  

@@ -1,3 +1,6 @@
+from networkx import is_eulerian
+
+
 class Graph():
     def __init__(self, matrix: list[list[int]]) -> None:
         self.matrix: list[list[int]] = matrix # macierz grafu
@@ -336,6 +339,23 @@ def genCyklHamiltonaAcy(n,s):
     # print("DI")
     return b.build()
 
+def genCykeULERAcy(n,s):
+    h = gen.directed_hamiltonian(n,s)
+    b = GraphBuilder(n)
+    G = gen.directed_acy(n,s)
+    while nx.is_eulerian(G):
+        print("newgen")
+        G = gen.directed_acy(n,s)
+
+    for i, j in G.edges:
+        # print(i,j)
+        b.edge(i+1,j+1)
+    # print("DI")
+    return b.build()
+
+import gen
+
+
 import gen
 
 import networkx as nx
@@ -349,6 +369,16 @@ def cyklEulera():
     print("DI")
 
     print(Fleury(b.build()))
+
+
+def genCyklEulera(n,s):
+    # n,s = 10, 10
+    e = gen.directed_eulerian(n,s)
+    b = GraphBuilder(n)
+    for i,j in e.edges:
+        print(i,j)
+        b.edge(i+1,j+1)
+    return b.build()
     # g = Graph(b.build())
     # print(g.Fleury())
 if __name__ == "__main__":

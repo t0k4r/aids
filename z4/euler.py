@@ -165,10 +165,11 @@ def Fleury(matrix:list[list[int]]):
 #     print("Cykl Eulera:", eulerian_cycle)
 
 import sys
+
 sys.setrecursionlimit(2137*420*69)
 import gen
-def gen_graph():
-    n,s = 5,10
+def gen_graph(n,s):
+    # n,s = 5,10
     G = gen.directed_eulerian(n,s)
     graph = []
     for i in range(n):
@@ -177,13 +178,13 @@ def gen_graph():
             row.append(0)
         graph.append(row)
 
-    edges = []
-    edges.append((1,2))
-    edges.append((1,4))
-    edges.append((2,4))
-    edges.append((3,4))
-    edges.append((3,5))
-    edges.append((5,4))
+    # edges = []
+    # edges.append((1,2))
+    # edges.append((1,4))
+    # edges.append((2,4))
+    # edges.append((3,4))
+    # edges.append((3,5))
+    # edges.append((5,4))
     # edges.append((1,3))
     # edges.append((1,4))
     # edges.append((2,4))
@@ -191,7 +192,44 @@ def gen_graph():
     # edges.append((3,4))
     # edges.append((3,0))
 
-    for i, j in edges:
+    for i, j in G.edges:
+        graph[i-1][j-1] = 1
+        graph[j-1][i-1] = 1
+    for i in range(n):
+        for j in range(n):
+            print(graph[i][j],end="\t")
+        print()
+    return graph
+
+import networkx as nx
+def gen_graph_acy(n,s):
+    # n,s = 5,10
+    G = gen.directed_acy(n,s)
+    while nx.is_eulerian(G):
+        G = gen.directed_acy(n,s)
+
+    graph = []
+    for i in range(n):
+        row = []
+        for j in range(n):  # Poprawiono indeksowanie
+            row.append(0)
+        graph.append(row)
+
+    # edges = []
+    # edges.append((1,2))
+    # edges.append((1,4))
+    # edges.append((2,4))
+    # edges.append((3,4))
+    # edges.append((3,5))
+    # edges.append((5,4))
+    # edges.append((1,3))
+    # edges.append((1,4))
+    # edges.append((2,4))
+    # edges.append((2,0))
+    # edges.append((3,4))
+    # edges.append((3,0))
+
+    for i, j in G.edges:
         graph[i-1][j-1] = 1
         graph[j-1][i-1] = 1
     for i in range(n):
@@ -219,7 +257,7 @@ def read_graph_from_file(filename):
 
 
 def cykeEulera():
-    graph = gen_graph()
+    graph = gen_graph(2,1)
     # print(find_eulerian_cycle(graph))
     print(Fleury(graph))
     pass
