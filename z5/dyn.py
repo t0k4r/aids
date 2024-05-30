@@ -35,11 +35,14 @@ def knapsack(capacity, items):
             sz -= W[itemIndex]
 
     itemsSelected.reverse()
-    print("Wybrane przedmioty:")
+    # return DP[N][capacity], itemsSelected
+    # print("Wybrane przedmioty:")
+    ret = []
     for itemIndex in itemsSelected:
-        print("Pojemność:", items[itemIndex][0], "Wartość:", items[itemIndex][1])
+        ret.append((items[itemIndex][0], items[itemIndex][1]))
+        # print("Pojemność:", items[itemIndex][0], "Wartość:", items[itemIndex][1])
 
-    return DP[N][capacity]
+    return DP[N][capacity], ret
 
 # n, b = map(int, input().split())
 
@@ -53,4 +56,4 @@ items= [(3,5),(1,2),(4,8),(5,9), (2,3)]
 
 
 
-print("Wartość zapakowanego plecaka", knapsack(b, items))
+# print("Wartość zapakowanego plecaka", knapsack(b, items))

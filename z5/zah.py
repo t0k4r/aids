@@ -2,7 +2,7 @@
 
 def zachlanny(items, cap):
     items.sort(key=lambda item: item[0]/item[1], reverse=True)
-    print(items)
+    # print(items)
     value = 0
     weight = 0
     selected = []
@@ -25,4 +25,4 @@ cap=7
 items = [(3,5),(1,2),(4,8),(5,9), (2,3)]
 
 weg,max, sel = zachlanny(items, cap)
-print(weg,max, sel)
+# print(weg,max, sel)

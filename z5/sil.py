@@ -45,8 +45,8 @@ przedmioty = [(3,5),(1,2),(4,8),(5,9), (2,3)]
 
 waga_max, wartosc_max, wybrane_przedmioty = maksymalna_wartosc(przedmioty, pojemnosc_plecaka)
 
-print(f"Maksymalna waga: {waga_max}")
-print(f"Maksymalna wartość: {wartosc_max}")
-print("Wybrane przedmioty:")
-for przedmiot in wybrane_przedmioty:
-  print(f"Rozmiar: {przedmiot[0]}, Wartość: {przedmiot[1]}")
+# print(f"Maksymalna waga: {waga_max}")
+# print(f"Maksymalna wartość: {wartosc_max}")
+# print("Wybrane przedmioty:")
+# for przedmiot in wybrane_przedmioty:
+#   print(f"Rozmiar: {przedmiot[0]}, Wartość: {przedmiot[1]}")
