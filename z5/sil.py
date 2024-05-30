@@ -28,12 +28,20 @@ def maksymalna_wartosc(przedmioty, pojemnosc_plecaka):
   return wagi_max, wartosci_max, wybrane_przedmioty
 
 # Pobranie danych od użytkownika
-n, pojemnosc_plecaka = map(int, input("Podaj liczbę przedmiotów i pojemność plecaka (n b): ").split())
+# n, pojemnosc_plecaka = map(int, input("Podaj liczbę przedmiotów i pojemność plecaka (n b): ").split())
 
-przedmioty = []
-for i in range(n):
-  r, w = map(int, input(f"Podaj rozmiar i wartość przedmiotu {i+1} (r w): ").split())
-  przedmioty.append((r, w))
+# przedmioty = []
+# for i in range(n):
+#   r, w = map(int, input(f"Podaj rozmiar i wartość przedmiotu {i+1} (r w): ").split())
+#   przedmioty.append((r, w))
+
+
+# cap=7
+# items= [(3,5),(1,2),(4,8),(5,9),(2,3),(3,6),(4,7),(2,4)]
+items = [(3,5),(1,2),(4,8),(5,9), (2,3)]
+pojemnosc_plecaka = 7
+przedmioty = [(3,5),(1,2),(4,8),(5,9), (2,3)]
+
 
 waga_max, wartosc_max, wybrane_przedmioty = maksymalna_wartosc(przedmioty, pojemnosc_plecaka)
 

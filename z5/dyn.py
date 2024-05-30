@@ -41,11 +41,16 @@ def knapsack(capacity, items):
 
     return DP[N][capacity]
 
-n, b = map(int, input().split())
+# n, b = map(int, input().split())
 
-items = []
-for i in range(n):
-    r, w = map(int, input().split())
-    items.append((r, w))
+# items = []
+# for i in range(n):
+#     r, w = map(int, input().split())
+#     items.append((r, w))
+
+b = 7
+items= [(3,5),(1,2),(4,8),(5,9), (2,3)]
+
+
 
 print("Wartość zapakowanego plecaka", knapsack(b, items))
